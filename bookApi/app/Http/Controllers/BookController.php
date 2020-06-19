@@ -73,22 +73,24 @@ class BookController extends Controller
      {
         // METHOD
         $rules = [
-            'title' => 'required|max:255',
-            'description' => 'required|max:255',
-            'price' => 'required|min:1',
-            'author_id' => 'required|min:1',
+            'title' => 'max:255',
+            'description' => 'max:255',
+            'price' => 'min:1',
+            'author_id' => 'min:1',
         ];
 
         $this->validate($request, $rules);
 
         $book = Book::findOrFail($book);
 
-        $book->fill($request->all());
+        //$book->update();
 
+        $book->fill($request->all()); //llenar con datos actuales
+//realiza la comparacion
         if($book->isClean()){
             return $this->errorResponse('At least one value must change', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
+//guardar los datos
         $book->save();
 
         return $this->successResponse($book);
@@ -104,6 +106,6 @@ class BookController extends Controller
         $book = Book::findOrFail($book);
         $book->delete();
 
-        return $this->successResponse($book);
+        return $this->successResponse($book); //retorna si fue satisfactoria
     } 
 }

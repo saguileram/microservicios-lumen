@@ -67,6 +67,10 @@ class Handler extends ExceptionHandler
         }
 
         if($exception instanceof AuthorizationException){
+            return $this->errorResponse($exception->getMessage(), Response::HTTP_FORBIDEN);
+        }
+
+        if($exception instanceof AuthenticationnException){
             return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
         }
 

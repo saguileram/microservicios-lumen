@@ -14,4 +14,11 @@ services:
       - ./bookApi/:/var/www/html
     ports:
       - 8001:80
+  apiGateway:
+    image: malejandro13/nginx-php73-dev:latest
+    container_name: apiGateway
+    volumes:
+      - ./apiGateway/:/var/www/html
+    ports:
+      - 8002:80
 
