@@ -7,6 +7,8 @@ use App\Traits\ApiResponse;
 use App\Services\BookService;
 use Illuminate\Http\Response;
 
+use App\Services\AuthorService; //agregado
+
 class BookController extends Controller
 {
     use ApiResponse;
@@ -30,12 +32,20 @@ class BookController extends Controller
 
     public function show($book)
     {
-        return $this->successResponse($this->bookService->obtainBook($book));
+        return $this->successResponse($this->bookService->obtainBooks($book));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $author)
     {
-        return $this->successResponse($this->bookService->createBook($request->all()), Response::HTTP_CREATED);
+       $author = $this->successResponse($this->authorService->obtainAuthors());
+       //$author = Author::findOrFail($author);
+       if($author->isEmpty()){
+           return $author;
+           //return $this->errorResponse('does not exist', Response::HTTP_UNPROCESSABLE_ENTITY);
+       }else{
+           return $this->successResponse($this->bookService->createBook($request->all()), Response::HTTP_CREATED);
+       }
+       
     }
 
     public function update(Request $request, $book)
